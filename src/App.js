@@ -1,12 +1,19 @@
-import classes from './App.module.scss';
-console.log(classes);
+import React, {Component} from 'react';
+import Layout from './hoc/Layout/Layout';
 
-function App() {
+// import classes from './App.module.scss';
+// console.log(classes);
+class App extends Component {
+  render() {
   return (
-    <div className={classes.App}>
-      <h1 className = {classes['header']}>H! REACT</h1>
-    </div>
-  );
+    <Layout>
+
+      <div style = {{width: 400, outline: '1px solid #424242'}}>
+        <h1>Layout works</h1>
+      </div>
+    </Layout>    
+  )
+}
 }
 
 export default App;
