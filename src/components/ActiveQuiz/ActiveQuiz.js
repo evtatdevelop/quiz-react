@@ -4,16 +4,21 @@ import AnswersList from '../AnswersList/AnswersList';
 import classes from './ActiveQuiz.module.scss';
 
 const ActiveQuiz = props => {
+  const {question, answers} = props.question;
+  
   return (
     <div className = {classes.ActiveQuiz}>
       <p className = {classes.Question}>
         <span>
           <strong>2.</strong>&nbsp;
-          What's Up?
+          {question}
         </span>
         <small>2 of 12</small>
       </p>
-      <AnswersList answers = {props.answers}/>
+      <AnswersList 
+        answers = {answers}
+        onAnswerClick = {props.onAnswerClick}
+      />
     </div>
   )
 }
