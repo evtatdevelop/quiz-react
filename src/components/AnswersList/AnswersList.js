@@ -6,14 +6,17 @@ import classes from './AnswersList.module.scss';
 
 
 const AnswersList = props => {
+  const {answers, onAnswerClick, answerState} = props;
+
   return (
     <ul className = {classes.AnswersList}>
-      { props.answers.map((answer, index) => {
+      { answers.map((answer, index) => {
         return (
           <AnswerItem 
             key = {index} 
             answer = {answer}
-            onAnswerClick = {props.onAnswerClick}
+            onAnswerClick = {onAnswerClick}
+            answerState = {answerState ? answerState[answer.id] : null}
           />
         )
       }) }
