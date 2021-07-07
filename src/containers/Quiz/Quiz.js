@@ -6,6 +6,7 @@ import classes from './Quiz.module.scss';
 
 class Quiz extends Component {
   state = {
+    result: {},
     isFinished: false,
     activeQuestion: 0,
     answerState: null, // { [id]: 'success' / 'fail' }
@@ -44,33 +45,57 @@ class Quiz extends Component {
     if (answerState && answerState[Object.keys(answerState)[0]] === 'success') return;
     
     const isCorrectAnswer = quiz[activeQuestion].correctAnswer === idAnswer;
+    const idActiveQuestion = quiz[activeQuestion].id;
+    const result = this.state.result;
 
     if (isCorrectAnswer) {
-      this.setState({answerState: {[idAnswer]: 'success'}});
-
-      const timeout = window.setTimeout( () => {
-        if (this.isQuizFinished()) {
-          this.setState({isFinished: true});
-          
-        } else {
-          this.setState({
-            activeQuestion: activeQuestion + 1,
-            answerState: null,
-          });
-        }
-        window.clearTimeout(timeout);
-      }, 1000);   
+      result[idActiveQuestion] = 'success';
+      this.setState({
+        answerState: {[idAnswer]: 'success'},
+        result,
+      }); 
     
     } else {
-      this.setState({answerState: {[idAnswer]: 'fail'}});    
+      result[idActiveQuestion] = 'fail';
+      this.setState({
+        answerState: {[idAnswer]: 'fail'},
+        result,
+      });    
     }
+
+    const timeout = window.setTimeout( () => {
+      if (this.isQuizFinished()) {
+        this.setState({isFinished: true});
+        
+      } else {
+        this.setState({
+          activeQuestion: activeQuestion + 1,
+          answerState: null,
+        });
+      }
+      window.clearTimeout(timeout);
+    }, 1000);  
   }
 
+  retryHandler = () => {
+    this.setState({
+      result: {},
+      isFinished: false,
+      activeQuestion: 0,
+      answerState: null,
+    })
+  }
+
+
   render() {
-    const {quiz, activeQuestion, answerState} = this.state;
+    const {quiz, activeQuestion, answerState, result} = this.state;
 
     const content = this.state.isFinished 
-      ? <FinishQuiz/>
+      ? <FinishQuiz
+         result = {result}
+         quiz = {quiz}
+         retryHandler = {this.retryHandler}
+      />
       : <ActiveQuiz 
             currentQuestion = {quiz[activeQuestion]}
             onAnswerClick = {this.answerHandler}  
