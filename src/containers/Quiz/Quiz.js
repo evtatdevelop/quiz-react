@@ -42,7 +42,8 @@ class Quiz extends Component {
   answerHandler = idAnswer => {
     const {answerState, activeQuestion, quiz} = this.state;
 
-    if (answerState && answerState[Object.keys(answerState)[0]] === 'success') return;
+    // if (answerState && answerState[Object.keys(answerState)[0]] === 'success') return;
+    if (answerState) return;
     
     const isCorrectAnswer = quiz[activeQuestion].correctAnswer === idAnswer;
     const idActiveQuestion = quiz[activeQuestion].id;

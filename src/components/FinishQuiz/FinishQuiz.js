@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '../UI/Button/Button';
 
 import classes from './FinishQuiz.module.scss';
 
@@ -28,7 +29,19 @@ const FinishQuiz = props => {
       <p>Correct {numCorrectAnswers} of {quiz.length}</p>
 
       <div>
-        <button onClick = {props.retryHandler}>Retry</button>
+        <Button 
+          onClick = {props.retryHandler}
+          disabled = {false}
+          type = 'primary'
+        >
+          Retry
+        </Button>    
+        <Button
+          disabled = {false}
+          type = 'success'
+        >
+          Move to quiz list
+        </Button>    
       </div>
     </div>
   )
