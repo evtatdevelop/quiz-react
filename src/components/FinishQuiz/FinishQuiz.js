@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../UI/Button/Button';
+import { Link } from 'react-router-dom';
 
 import classes from './FinishQuiz.module.scss';
 
@@ -35,13 +36,16 @@ const FinishQuiz = props => {
           type = 'primary'
         >
           Retry
-        </Button>    
-        <Button
-          disabled = {false}
-          type = 'success'
-        >
-          Move to quiz list
-        </Button>    
+        </Button>
+        <Link to = '/'>
+          <Button
+            disabled = {false}
+            type = 'success'
+          >
+            Move to quiz list
+          </Button>          
+        </Link>
+  
       </div>
     </div>
   )
