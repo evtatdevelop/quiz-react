@@ -45,7 +45,7 @@ export default class Auth extends Component {
   }
 
   loginHandler = () => {
-    console.log('submit')
+    
   }
   
   singupHandler = () => {
