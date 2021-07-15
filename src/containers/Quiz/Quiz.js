@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz';
 import FinishQuiz from '../../components/FinishQuiz/FinishQuiz';
+// import axios from 'axios';
+import axios from '../../axios/axios-quiz';
+import Loader from '../../components/UI/Loader/Loader';
 
 import classes from './Quiz.module.scss';
 
@@ -10,33 +13,23 @@ class Quiz extends Component {
     isFinished: false,
     activeQuestion: 0,
     answerState: null, // { [id]: 'success' / 'fail' }
-    quiz: [
-      {
-        id: 1,
-        question: 'What\'s Up?!',
-        correctAnswer: 2,
-        answers: [
-          {text: 'Answer 1', id: 1},
-          {text: 'Answer 2', id: 2},
-          {text: 'Answer 3', id: 3},
-          {text: 'Answer 4', id: 4},          
-        ]
-      },
-      {
-        id: 2,
-        question: 'It\'s a small world?',
-        correctAnswer: 3,
-        answers: [
-          {text: 'Yes', id: 1},
-          {text: 'No', id: 2},
-          {text: 'I\'m not sure', id: 3},          
-        ]
-      },
-    ],
+    quiz: [],
+    loading: true
   }
 
-  componentDidMount() {
-    console.log('Quiz ID: ', this.props.match.params.id)
+  async componentDidMount() {
+    // console.log('Quiz ID: ', this.props.match.params.id);
+    try {
+      // const response = await axios.get(`https://react-tests-48ee5-default-rtdb.firebaseio.com/quizes/${this.props.match.params.id}.json`);
+      const response = await axios.get(`/quizes/${this.props.match.params.id}.json`);
+      const quiz = response.data;
+      this.setState({
+        quiz,
+        loading: false
+      });
+    } catch(error) {
+      console.error(error);
+    } 
   }
 
   isQuizFinished = () => {
@@ -113,7 +106,11 @@ class Quiz extends Component {
       <div className = {classes.Quiz}>
         <h1>Quiz</h1>
         <div className = {classes.QuizWrapper}>
-          {content}
+          {
+            this.state.loading
+              ? <Loader/>
+              : content
+          }
         </div>
           
       </div>
