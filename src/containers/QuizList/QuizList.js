@@ -1,21 +1,15 @@
 import React, {Component} from 'react';
 import { NavLink } from 'react-router-dom';
 import Loader from '../../components/UI/Loader/Loader';
-// import axios from 'axios';
-import axios from '../../axios/axios-quiz';
-
+import { connect } from 'react-redux';
+import { fetchQuizes } from '../../store/actions/quiz';
 
 import classes from './QuizList.module.scss';
 
-export default class QuizList extends Component {
-
-  state = {
-    quizes: [],
-    loading: true
-  }
+class QuizList extends Component {
 
   renderQuizList = () => {
-    return this.state.quizes.map(
+    return this.props.quizes.map(
       quiz => (
         <li key = {quiz.id}> 
           <NavLink to = {`/quiz/${quiz.id}`}>{quiz.name}</NavLink>
@@ -25,24 +19,7 @@ export default class QuizList extends Component {
   }
 
   async componentDidMount() {
-    try {
-      // const response = await axios.get('https://react-tests-48ee5-default-rtdb.firebaseio.com/quizes.json');
-      const response = await axios.get('/quizes.json');
-      // console.log(response.data);
-      const quizes = [];
-      Object.keys(response.data).forEach((key, index) => {
-        quizes.push({
-          id: key,
-          name: `Test #${index + 1}`
-        })
-      });
-      this.setState({
-        quizes,
-        loading: false
-      });
-    } catch(error) {
-      console.error(error);
-    } 
+    this.props.fetchQuizes()
   }
 
   render() {
@@ -51,7 +28,7 @@ export default class QuizList extends Component {
         <div>
           <h1>Quiz list</h1>
           {
-            this.state.loading 
+            this.props.loading // && this.props.quizes.length !== 0
               ? <Loader/> 
               : <ul>
                   { this.renderQuizList() }
@@ -63,3 +40,18 @@ export default class QuizList extends Component {
     )
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    quizes: state.quiz.quizes,
+    loading: state.quiz.loading
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchQuizes: () => dispatch(fetchQuizes())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizList)

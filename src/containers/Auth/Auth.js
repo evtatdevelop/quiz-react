@@ -150,7 +150,7 @@ export default class Auth extends Component {
               onClick = {this.loginHandler}
               disabled = {!this.state.isFormValid}
             >
-              Login
+              Sign in
             </Button>
             
             <Button
