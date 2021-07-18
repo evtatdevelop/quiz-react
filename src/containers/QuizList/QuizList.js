@@ -18,7 +18,7 @@ class QuizList extends Component {
     )
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.props.fetchQuizes()
   }
 
@@ -42,9 +42,10 @@ class QuizList extends Component {
 }
 
 function mapStateToProps(state) {
+  const {quizes, loading} = state.quiz
   return {
-    quizes: state.quiz.quizes,
-    loading: state.quiz.loading
+    quizes,
+    loading
   }
 }
 
