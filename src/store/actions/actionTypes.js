@@ -7,3 +7,6 @@ export const SET_ANSWER = 'SET_ANSWER'
 export const NEXT_QUSTION = 'NEXT_QUSTION'
 export const IS_FINISHED = 'IS_FINISHED'
 export const RETRY_QUIZ = 'RETRY_QUIZ'
+
+export const ADD_QUESTION = 'ADD_QUESTION'
+export const RESET_CREATE_QUIZ = 'RESET_CREATE_QUIZ'
