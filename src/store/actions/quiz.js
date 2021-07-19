@@ -2,7 +2,7 @@ import axios from '../../axios/axios-quiz';
 import { 
   FETCH_QUIZES_START, FETCH_QUIZES_SUCCESS, FETCH_QUIZES_ERROR,
   FETCH_QUIZ_SUCCESS,
-  GET_ANSWER, NEXT_QUSTION, IS_FINISHED, RETRY_QUIZ
+  SET_ANSWER, NEXT_QUSTION, IS_FINISHED, RETRY_QUIZ
 } from './actionTypes';
 
 export function fetchQuizes() {
@@ -27,7 +27,6 @@ export function fetchQuizes() {
   }
 }
 
-
 export function fetchQuizById(quizId) {
   return async dispatch => {
     dispatch(fetchQuizesStart())
@@ -44,9 +43,14 @@ export function fetchQuizById(quizId) {
   }
 }
 
-export function getAnswer(idAnswer, activeQuestion, quiz, result) {
-  return dispatch => {
+export function quizAnswerClick(idAnswer) {
+  return (dispatch, getState) => {
 
+    const state = getState().quiz;
+
+    const {answerState, activeQuestion, quiz, result} = state;
+    if (answerState) return;
+    
     const isCorrectAnswer = quiz[activeQuestion].correctAnswer === idAnswer;
     const idActiveQuestion = quiz[activeQuestion].id;
 
@@ -55,49 +59,47 @@ export function getAnswer(idAnswer, activeQuestion, quiz, result) {
       dispatch(setAnswer({[idAnswer]: 'success'}, result)) 
     } else {
       result[idActiveQuestion] = 'fail';
-      dispatch(setAnswer({[idAnswer]: 'fail'}, result)) 
+      dispatch(setAnswer({[idAnswer]: 'fail'}, result))
     }
 
     const timeout = window.setTimeout( () => {
       if (activeQuestion + 1 === quiz.length) {
-        dispatch(isFinished())      
+        dispatch(isFinished())  
       } else {
         dispatch(nextQuestion())
       }
       window.clearTimeout(timeout);
-    }, 1000);
+    }, 1000);  
+
   }
-}
+} 
 
 export function retryQuiz() {
-  return dispatch => {
-    dispatch({
+  return {
       type: RETRY_QUIZ,
-    })
   }
 }
 
 
 function setAnswer(answerState, result) {
-    return {
-    type: GET_ANSWER,
+  return {
+    type: SET_ANSWER,
     answerState,
     result
   }
 }
+
 function nextQuestion() {
   return {
     type: NEXT_QUSTION,
   }
 }
+
 function isFinished() {
   return {
     type: IS_FINISHED,
   }
 }
-
-
-
 
 function fetchQuizesStart() {
   return {

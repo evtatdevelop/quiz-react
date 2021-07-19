@@ -3,7 +3,7 @@ import {
   FETCH_QUIZES_SUCCESS, 
   FETCH_QUIZES_ERROR,
   FETCH_QUIZ_SUCCESS,
-  GET_ANSWER,
+  SET_ANSWER,
   NEXT_QUSTION,
   IS_FINISHED,
   RETRY_QUIZ
@@ -50,11 +50,10 @@ export default function quizReducer(state = initialState, action) {
         quiz: action.quiz
       }
 
-
-    case GET_ANSWER:
+    case SET_ANSWER:
       return {
         ...state,
-        answerState: action.answerState, // {[idAnswer]: 'success'},
+        answerState: action.answerState,
         result: action.result,
       }
 
@@ -70,7 +69,7 @@ export default function quizReducer(state = initialState, action) {
         ...state,
         isFinished: true
       }
-      
+
     case RETRY_QUIZ:
       return {
         ...state,
@@ -79,8 +78,6 @@ export default function quizReducer(state = initialState, action) {
         activeQuestion: 0,
         answerState: null,
       }
-
-
 
     default: return state
   }  
